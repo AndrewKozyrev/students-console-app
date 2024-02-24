@@ -6,8 +6,8 @@ import java.util.Set;
 
 public interface StudentRepository {
     Set<Student> findAll();
-    Student save(Student student);
-    void deleteById(Long id);
 
-    void deleteAll();
+    Student save(Student student);
+
+    boolean deleteById(Long id);
 }

@@ -1,6 +1,7 @@
 package org.landsreyk.app.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.landsreyk.app.event.CommandEvent;
 import org.landsreyk.app.model.Student;
 import org.landsreyk.app.repository.StudentRepository;
@@ -8,8 +9,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import java.util.List;
+
 @ShellComponent
 @RequiredArgsConstructor
+@Slf4j
 public class StudentCommands {
 
     private final StudentRepository studentRepository;
@@ -31,12 +35,15 @@ public class StudentCommands {
 
     @ShellMethod(key = "delete")
     public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
-        publisher.publishEvent(new CommandEvent<>(this, "delete", id));
+        boolean isDeleted = studentRepository.deleteById(id);
+        if (isDeleted) {
+            publisher.publishEvent(new CommandEvent<>(this, "delete", id));
+        }
     }
 
-    @ShellMethod(key = "clear")
+    @ShellMethod(key = {"purge", "delete-all", "wipe"})
     public void clearStudents() {
-        studentRepository.deleteAll();
+        List<Long> ids = studentRepository.findAll().stream().map(Student::getId).toList();
+        ids.forEach(this::deleteStudent);
     }
 }

@@ -36,13 +36,11 @@ public class InMemoryStudentRepository implements StudentRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        students.removeIf(s -> s.getId().equals(id));
-        idPool.add(id);
-    }
-
-    @Override
-    public void deleteAll() {
-        students.clear();
+    public boolean deleteById(Long id) {
+        boolean isDeleted = students.removeIf(s -> s.getId().equals(id));
+        if (isDeleted) {
+            idPool.add(id);
+        }
+        return isDeleted;
     }
 }
