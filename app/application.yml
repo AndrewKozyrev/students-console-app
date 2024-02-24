@@ -2,4 +2,4 @@ logging:
   level:
     root: info
 app:
-  enable-startup-listener: true
+  enable-startup-listener: false
