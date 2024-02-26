@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY target/students-console-app.jar students-console-app.jar
 
-VOLUME ["/app"]
+VOLUME ["/config"]
 
 CMD ["java", "-jar", "students-console-app.jar"]

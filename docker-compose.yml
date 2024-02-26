@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  students-app:
+    image: app-image
+    stdin_open: true
+    tty: true
+    environment:
+      SPRING_CONFIG_LOCATION: /config/application.yml
+    volumes:
+      - ./app/application.yml:/config/application.yml:ro
